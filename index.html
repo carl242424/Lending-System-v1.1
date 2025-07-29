@@ -46,8 +46,10 @@
 
     <!-- Dashboard -->
     <div id="dashboard" class="dashboard hidden">
+        <!-- Sidebar Overlay for Mobile -->
+        <div id="sidebarOverlay" class="sidebar-overlay hidden" onclick="closeSidebar()"></div>
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <i class="fas fa-handshake"></i>
                 <h2>Lending System</h2>
@@ -79,6 +81,10 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="top-bar">
+                <!-- Hamburger menu for mobile -->
+                <button id="sidebarToggle" class="sidebar-toggle" aria-label="Open sidebar" onclick="openSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <h1>Lending Dashboard</h1>
                 <div class="user-info">
                     <i class="fas fa-user-circle"></i>

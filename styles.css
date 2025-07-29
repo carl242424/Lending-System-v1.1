@@ -616,6 +616,94 @@ body {
     color: #856404;
 }
 
+/* --- Sidebar Overlay for Mobile --- */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+  display: none;
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* --- Hamburger Menu Button --- */
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  color: #333;
+}
+
+/* --- Responsive Sidebar --- */
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 240px;
+    height: 100vh;
+    background: #222;
+    color: #fff;
+    z-index: 100;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  }
+  .sidebar.active {
+    left: 0;
+  }
+  .sidebar-overlay {
+    display: none;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+  .main-content {
+    margin-left: 0 !important;
+  }
+  .sidebar-toggle {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 80vw;
+    max-width: 300px;
+  }
+}
+
+/* Hide sidebar by default on mobile */
+@media (max-width: 900px) {
+  .sidebar {
+    left: -100vw;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+}
+
+/* Ensure top-bar layout works with hamburger */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Prevent content shift when sidebar opens */
+@media (max-width: 900px) {
+  .dashboard {
+    position: relative;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .sidebar {

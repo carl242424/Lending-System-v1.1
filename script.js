@@ -683,3 +683,21 @@ function exportCollections() {
     
     showNotification('Collections exported successfully!', 'success');
 } 
+
+// Responsive Sidebar for Mobile
+function openSidebar() {
+    document.getElementById('sidebar').classList.add('active');
+    document.getElementById('sidebarOverlay').classList.add('active');
+    document.getElementById('sidebarOverlay').classList.remove('hidden');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('active');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+    document.getElementById('sidebarOverlay').classList.add('hidden');
+}
+// Optional: Close sidebar when resizing to desktop
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 900) {
+        closeSidebar();
+    }
+}); 
