@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lending Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-handshake"></i>
+                <h1>Lending Management</h1>
+                <p>Sign in to access your dashboard</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+            </form>
+            <div class="demo-credentials">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>Username: admin</p>
+                <p>Password: admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard hidden">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-handshake"></i>
+                <h2>Lending System</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#" onclick="showSection('lending')">
+                            <i class="fas fa-money-bill-wave"></i>
+                            Lending
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('daily-collection')">
+                            <i class="fas fa-calendar-day"></i>
+                            Daily Collection
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <h1>Lending Dashboard</h1>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="currentUser">Admin</span>
+                </div>
+            </div>
+
+            <!-- Lending Section -->
+            <div id="lendingSection" class="content-section">
+                <div class="section-header">
+                    <h2>Lending Management</h2>
+                    <button class="add-btn" onclick="openAddLoanModal()">
+                        <i class="fas fa-plus"></i>
+                        Add New Loan
+                    </button>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Borrowers</h3>
+                            <p id="totalBorrowers">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Loans</h3>
+                            <p id="totalLoans">₱0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Active Loans</h3>
+                            <p id="activeLoans">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Paid Loans</h3>
+                            <p id="paidLoans">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loans Table -->
+                <div class="table-container">
+                    <table class="loans-table">
+                        <thead>
+                            <tr>
+                                <th>Borrower</th>
+                                <th>Loan Amount</th>
+                                <th>Months to Pay</th>
+                                <th>Interest %</th>
+                                <th>Total Loan</th>
+                                <th>Collection Date</th>
+                                <th>Daily Payments</th>
+                                <th>Loan Collector</th>
+                                <th>Borrower Balance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loansTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Daily Collection Section -->
+            <div id="dailyCollectionSection" class="content-section hidden">
+                <div class="section-header">
+                    <h2>Daily Collection Records</h2>
+                    <div class="header-actions">
+                        <button class="filter-btn" onclick="toggleDateFilter()">
+                            <i class="fas fa-filter"></i>
+                            Filter by Date
+                        </button>
+                        <button class="export-btn" onclick="exportCollections()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Date Filter -->
+                <div id="dateFilter" class="date-filter hidden">
+                    <div class="filter-row">
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate">
+                        </div>
+                        <div class="form-group">
+                            <button class="apply-filter-btn" onclick="applyDateFilter()">
+                                <i class="fas fa-search"></i>
+                                Apply Filter
+                            </button>
+                            <button class="clear-filter-btn" onclick="clearDateFilter()">
+                                <i class="fas fa-times"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards for Collections -->
+                <div class="summary-cards">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Collections</h3>
+                            <p id="totalCollections">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Amount</h3>
+                            <p id="totalCollectionAmount">₱0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Today's Collections</h3>
+                            <p id="todayCollections">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Average Daily</h3>
+                            <p id="averageDaily">₱0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collections Table -->
+                <div class="table-container">
+                    <table class="collections-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Borrower</th>
+                                <th>Loan Amount</th>
+                                <th>Payment Amount</th>
+                                <th>Previous Balance</th>
+                                <th>New Balance</th>
+                                <th>Collector</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="collectionsTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Loan Modal -->
+    <div id="addLoanModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Loan</h2>
+                <button class="close-btn" onclick="closeAddLoanModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addLoanForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="borrowerName">Borrower Name</label>
+                        <input type="text" id="borrowerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanAmount">Loan Amount (₱)</label>
+                        <input type="number" id="loanAmount" min="0" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="monthsToPay">Months to Pay</label>
+                        <input type="number" id="monthsToPay" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interestRate">Interest Rate (%)</label>
+                        <input type="number" id="interestRate" min="0" step="0.1" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="collectionDate">Collection Date</label>
+                        <input type="date" id="collectionDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanCollector">Loan Collector</label>
+                        <input type="text" id="loanCollector" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closeAddLoanModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Loan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Record Payment</h2>
+                <button class="close-btn" onclick="closePaymentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="paymentForm" class="modal-form">
+                <div class="form-group">
+                    <label for="paymentAmount">Payment Amount (₱)</label>
+                    <input type="number" id="paymentAmount" min="0" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closePaymentModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Record Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
