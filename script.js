@@ -230,29 +230,43 @@ function updateSummaryCards() {
 function updateLoansTable() {
     const tableBody = document.getElementById('loansTableBody');
     tableBody.innerHTML = '';
-    
+
+    const headers = [
+        'Borrower',
+        'Loan Amount',
+        'Months to Pay',
+        'Interest %',
+        'Total Loan',
+        'Collection Date',
+        'Daily Payments',
+        'Loan Collector',
+        'Borrower Balance',
+        'Status',
+        'Actions'
+    ];
+
     loans.forEach((loan, index) => {
         const row = document.createElement('tr');
-        
+
         // Calculate daily payment amount (total loan / (months * 30))
         const dailyPaymentAmount = loan.totalLoan / (loan.monthsToPay * 30);
-        
+
         row.innerHTML = `
-            <td><strong>${loan.borrower}</strong></td>
-            <td>₱${loan.loanAmount.toFixed(2)}</td>
-            <td>${loan.monthsToPay} months</td>
-            <td>${loan.interestRate}%</td>
-            <td>₱${loan.totalLoan.toFixed(2)}</td>
-            <td>${formatDate(loan.collectionDate)}</td>
-            <td>₱${loan.dailyPayments.toFixed(2)}</td>
-            <td>${loan.loanCollector}</td>
-            <td>₱${loan.borrowerBalance.toFixed(2)}</td>
-            <td>
+            <td data-label="${headers[0]}"><strong>${loan.borrower}</strong></td>
+            <td data-label="${headers[1]}">₱${loan.loanAmount.toFixed(2)}</td>
+            <td data-label="${headers[2]}">${loan.monthsToPay} months</td>
+            <td data-label="${headers[3]}">${loan.interestRate}%</td>
+            <td data-label="${headers[4]}">₱${loan.totalLoan.toFixed(2)}</td>
+            <td data-label="${headers[5]}">${formatDate(loan.collectionDate)}</td>
+            <td data-label="${headers[6]}">₱${loan.dailyPayments.toFixed(2)}</td>
+            <td data-label="${headers[7]}">${loan.loanCollector}</td>
+            <td data-label="${headers[8]}">₱${loan.borrowerBalance.toFixed(2)}</td>
+            <td data-label="${headers[9]}">
                 <span class="status-badge status-${loan.status.toLowerCase()}">
                     ${loan.status}
                 </span>
             </td>
-            <td>
+            <td data-label="${headers[10]}">
                 <div class="action-buttons">
                     ${loan.status === 'Ongoing' ? 
                         `<button class="btn btn-pay" onclick="openPaymentModal(${index})">
@@ -268,7 +282,7 @@ function updateLoansTable() {
                 </div>
             </td>
         `;
-        
+
         tableBody.appendChild(row);
     });
 }
@@ -521,31 +535,43 @@ function updateCollectionsSummaryCards() {
 function updateCollectionsTable() {
     const tableBody = document.getElementById('collectionsTableBody');
     tableBody.innerHTML = '';
-    
+
+    const headers = [
+        'Date & Time',
+        'Borrower',
+        'Loan Amount',
+        'Payment Amount',
+        'Previous Balance',
+        'New Balance',
+        'Collector',
+        'Status',
+        'Actions'
+    ];
+
     const collectionsToShow = filteredCollections.length > 0 ? filteredCollections : collections;
-    
+
     // Sort collections by date (newest first)
     const sortedCollections = collectionsToShow.sort((a, b) => 
         new Date(b.collectionDate) - new Date(a.collectionDate)
     );
-    
+
     sortedCollections.forEach((collection, index) => {
         const row = document.createElement('tr');
-        
+
         row.innerHTML = `
-            <td><strong>${formatDateTime(collection.collectionDate)}</strong></td>
-            <td>${collection.borrower}</td>
-            <td>₱${collection.loanAmount.toFixed(2)}</td>
-            <td>₱${collection.paymentAmount.toFixed(2)}</td>
-            <td>₱${collection.previousBalance.toFixed(2)}</td>
-            <td>₱${collection.newBalance.toFixed(2)}</td>
-            <td>${collection.collector}</td>
-            <td>
+            <td data-label="${headers[0]}"><strong>${formatDateTime(collection.collectionDate)}</strong></td>
+            <td data-label="${headers[1]}">${collection.borrower}</td>
+            <td data-label="${headers[2]}">₱${collection.loanAmount.toFixed(2)}</td>
+            <td data-label="${headers[3]}">₱${collection.paymentAmount.toFixed(2)}</td>
+            <td data-label="${headers[4]}">₱${collection.previousBalance.toFixed(2)}</td>
+            <td data-label="${headers[5]}">₱${collection.newBalance.toFixed(2)}</td>
+            <td data-label="${headers[6]}">${collection.collector}</td>
+            <td data-label="${headers[7]}">
                 <span class="collection-status status-${collection.status.toLowerCase()}">
                     ${collection.status}
                 </span>
             </td>
-            <td>
+            <td data-label="${headers[8]}">
                 <div class="action-buttons">
                     <button class="btn btn-edit" onclick="viewCollectionDetails(${collection.id})">
                         <i class="fas fa-eye"></i> View
@@ -556,7 +582,7 @@ function updateCollectionsTable() {
                 </div>
             </td>
         `;
-        
+
         tableBody.appendChild(row);
     });
 }
